@@ -1,4 +1,3 @@
-# vacc_beliefs
 
 Background:<br>
 In 2016, a national health survey in Uganda revealed that only 55% of children aged 12-23 months

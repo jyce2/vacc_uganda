@@ -23,7 +23,7 @@ already in the dataset.
 Methods (Factors Associated with Belief and Experience Scores):<br>
 To assess caregiver and child factors associated with aggregate belief and experience scores, we used nonparametric association tests. 
 Associations between continuous factors and aggregate scores were examined using Kendall’s Tau rank correlation, 
-binary factors and aggregate scores were examined using Wilcoxon Rank Sum test and Cohen’s d statistic, and multinomial factors and aggregate scores were examined using Kruskal-Wallis test. Post-hoc tests following Kruskal-Wallis were performed using Dunn's test for pairwise comparisons between groups. All statistical tests were performed at a two-sided significance level of 0.05. The significance level in Dunn’s test was adjusted using Holm’s method. 
+binary factors and aggregate scores were examined using Wilcoxon Rank Sum test and Cohen’s d statistic, and multinomial factors and aggregate scores were examined using Kruskal-Wallis test. Following Kruskal-Wallis, Dunn's test was performed for pairwise comparisons of scores between groups. All statistical tests were performed at a two-sided significance level of 0.05. The significance level in Dunn’s test was adjusted using Holm’s method. 
 
 References: 
 Uganda Bureau of Statistics (UBOS) and ICF. (2018). *Uganda Demographic and Health Survey 2016.* Kampala, Uganda and Rockville, Maryland, USA: UBOS and ICF.

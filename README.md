@@ -9,6 +9,7 @@ This study aims to explore social determinants influencing vaccination uptake, i
 Data for the study was collected between January 20, 2021, and April 30, 2021.
 
 ![alt text](uganda_vacc.png "(UBOS 2018)")
+Image credits (UBOS, 2018).
 
 
 Data Description:<br>

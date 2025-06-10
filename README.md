@@ -1,0 +1,28 @@
+# vacc_beliefs
+
+Background:<br>
+In 2016, a national health survey in Uganda revealed that only 55% of children aged 12-23 months
+received all recommended vaccinations. The target population for this study consists of households with
+children aged 12-23 months who reside with a caregiver in Bugoye Sub-county, a small rural town in
+western Uganda. Children at this age are recommended to receive the following vaccines and boosters:
+BCG (Bacille Calmette-Guérin), polio, pentadose 1-3 (diphtheria, tetanus, pertussis, hepatitis B, and Hib disease), rotavirus 1-2, and measles.
+This cross-sectional study aims to explore social determinants influencing vaccination uptake, including caregiver beliefs and experiences regarding vaccination. 
+Data for the study was collected between January 20, 2021, and April 30, 2021.
+
+Data Description:<br>
+The Phase 3 dataset is a cross-sectional survey of 1,689 children aged 12–23
+months in Bugoye sub-county, capturing vaccination uptake from vaccination cards or self-reports when cards were
+unavailable. It includes covariates, covering child characteristics, caregiver
+beliefs, and caregiver experiences, potential confounders such as caregiver education, marital status, and household demographics, 
+and response rates to vaccination uptake.  We created an additional response variable, indicating full vaccination status based on the eight vaccines
+already in the dataset.
+
+Methods (Factors Associated with Belief and Experience Scores):<br>
+To assess caregiver and child factors associated with aggregate belief and experience scores, we used nonparametric association tests. 
+Continuous factors and aggregate scores were examined using Kendall’s Tau rank correlation. 
+Binary factors and aggregate scores were compared using the Wilcoxon Rank Sum test and Cohen’s d statistic.
+Factors with more than two levels were compared using Kruskal-Wallis test. 
+The results from Kruskal-Wallis were further examined using Dunn's test to perform multiple comparisons on groups that significantly differed in mean rank score. 
+All statistical tests were performed at a two-sided level significance level of 0.05. The significance level in Dunn’s test was adjusted using Holm’s method. 
+
+

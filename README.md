@@ -2,8 +2,8 @@
 
 Background:<br>
 In 2016, a national health survey in Uganda revealed that about 55% of children aged 12-23 months
-received all recommended vaccinations (UBOS, 2018). To report vaccination rates in rural areas of western Uganda, we examine a 2021 childhood vaccination survey on
-12-23 month-old children, residing with a caregiver in Bugoye sub-county.
+received all recommended vaccinations (UBOS, 2018). To explore vaccination coverage in rural areas of western Uganda, 
+we analyzed a more recent vaccination survey of 12-23 month-old children, residing with a caregiver in Bugoye sub-county.
 Data for the study were collected between January 20, 2021 and April 30, 2021.
 Children of this age are recommended to receive the following vaccines and boosters:
 BCG (Bacille Calmette-Guérin), polio, pentadose 1-3 (diphtheria, tetanus, pertussis, hepatitis B, and Hib disease), rotavirus 1-2, and measles (UBOS, 2018).

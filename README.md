@@ -1,5 +1,7 @@
 ### BIOS 841: Statistical Collaboration Project
 
+#### Association between Caregiver Beliefs and Experiences and Childhood Immunizations in Uganda, 2021
+
 Background:<br>
 In 2016, a national health survey in Uganda revealed that about 55% of children aged 12-23 months
 received all recommended vaccinations (UBOS, 2018). To explore vaccination coverage in rural areas of western Uganda, 

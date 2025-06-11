@@ -1,4 +1,5 @@
-BIOS 841: Statistical Collaboration Project
+### BIOS 841: Statistical Collaboration Project
+
 Background:<br>
 In 2016, a national health survey in Uganda revealed that only 55% of children aged 12-23 months
 received all recommended vaccinations (UBOS, 2018). The target population consists of households with

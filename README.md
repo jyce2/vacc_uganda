@@ -1,7 +1,7 @@
 ### BIOS 841: Statistical Collaboration Project
 
 Background:<br>
-In 2016, a national health survey in Uganda revealed that only 55% of children aged 12-23 months
+In 2016, a national health survey in Uganda revealed that about 55% of children aged 12-23 months
 received all recommended vaccinations (UBOS, 2018). The target population consists of households with
 12-23 month old children, who reside with a caregiver in Bugoye sub-county, a small rural town in
 western Uganda. Children of this age are recommended to receive the following vaccines and boosters:

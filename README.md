@@ -26,7 +26,7 @@ To assess caregiver and child factors associated with aggregate belief and exper
 Associations between continuous factors and aggregate scores were examined using Kendall’s Tau rank correlation, 
 binary factors and aggregate scores were examined using Wilcoxon Rank Sum test and Cohen’s d statistic, and multinomial factors and aggregate scores were examined using Kruskal-Wallis test. Based on the Kruskal-Wallis results, Dunn's test was performed to conduct pairwise comparisons between levels from factors that were significantly associated with belief or experience scores. All statistical tests were performed at a two-sided significance level of 0.05. The significance level in Dunn’s test was adjusted using Holm’s method. 
 
-References:<br>
+Reference:<br>
 Uganda Bureau of Statistics (UBOS) and ICF. (2018). *Uganda Demographic and Health Survey 2016.* Kampala, Uganda and Rockville, Maryland, USA: UBOS and ICF.
 
 

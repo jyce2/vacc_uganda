@@ -25,9 +25,9 @@ already in the dataset.
 
 Methods (Factors Associated with Belief and Experience Scores):<br>
 To assess caregiver and child factors associated with aggregate belief and experience scores, we used various nonparametric tests. 
-Associations between continuous factors and aggregate scores were examined using Kendall’s Tau rank correlation, 
-binary factors and aggregate scores were examined using Wilcoxon Rank Sum test and Cohen’s d statistic, and multinomial factors and aggregate scores were examined using Kruskal-Wallis test. Based on the Kruskal-Wallis results, Dunn's test was performed to conduct pairwise comparisons between levels from factors that were significantly associated with belief or experience scores. All statistical tests were performed at a two-sided significance level of 0.05. The significance level in Dunn’s test was adjusted using Holm’s method. 
+Continuous variables were examined using Kendall’s Tau rank correlation, binary variables were examined using Wilcoxon Rank Sum test and Cohen’s d statistic, and multinomial variables were examined using Kruskal-Wallis test. Following Kruskal-Wallis, Dunn's test was performed for pairwise comparisons between groups that were significantly associated with belief or experience scores. All statistical tests were performed at a two-sided significance level of 0.05. The significance level in Dunn’s test was adjusted using Holm’s method. 
 
+We used the following nonparametric analyses to evaluate caregiver and child factors associated with aggregate belief and experience scores. Continuous variables were assessed using Kendall’s Tau rank correlation, binary variables with the Wilcoxon Rank Sum test and Cohen’s d statistic, and multinomial variables using the Kruskal–Wallis test. For variables showing significant associations in the Kruskal–Wallis analysis, pairwise comparisons were conducted using Dunn’s test. All tests were two-sided with a significance threshold of 0.05. Holm’s method was applied to adjust for multiple comparisons in Dunn’s test.
 Reference:<br>
 Uganda Bureau of Statistics (UBOS) and ICF. (2018). *Uganda Demographic and Health Survey 2016.* Kampala, Uganda and Rockville, Maryland, USA: UBOS and ICF.
 

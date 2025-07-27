@@ -1,0 +1,174 @@
+---
+title: "vacc_model_card"
+format: html
+author: Joyce Choe
+---
+
+
+## Import data
+
+```{r}
+#| echo: false
+
+# Import data 
+library(readr)
+cleanvac <- read_csv("project841_7.csv")
+
+# variable names 
+library(tidyverse)
+tibble(cleanvac)
+spec(cleanvac)
+
+# subset dataset to key variables of interest
+cleanvac <- cleanvac %>% 
+    drop_na(bednet, relationship, education, card, marital) %>%
+  select(beliefs1, exp1, vacc_where, child_sex, birthplace2, attendants, birth_status, bednet, inpatient, caregiver_sex, relationship, education, marital, card,  muac, age_months, birthplace, children, oldest_child, vacc_recall, measles, rota1, rota2,bcg, opt, penta1, penta2, penta3, vacc_full)
+
+```
+
+# Clean variables
+
+```{r}
+
+# change to factors
+library(stats)
+
+cleanvac$card <- as.factor(cleanvac$card)
+cleanvac$bednet <- as.factor(cleanvac$bednet)
+cleanvac$caregiver_sex <-as.factor(cleanvac$caregiver_sex)
+cleanvac$education <- as.factor(cleanvac$education)
+cleanvac$marital <- as.factor(cleanvac$marital)
+cleanvac$relationship <- as.factor(cleanvac$relationship)
+cleanvac$vacc_where <- as.factor(cleanvac$vacc_where)
+
+# relevel 
+cleanvac$vacc_where  <- relevel(cleanvac$vacc_where, ref = "4")
+
+
+```
+
+
+# Fit logistic regression model based on significant variables from unadjusted analysis by card status
+```{r}
+
+# Logistic model 
+model <- glm(card ~ + bednet + education + marital + relationship, data=cleanvac, family="binomial")
+
+
+# Parameter estimates
+summary(model)
+
+# vif check
+library(car)
+car::vif(model)
+vif(model)
+
+# GOF test 
+
+library(ResourceSelection)
+hoslem.test(model$y, fitted(model))
+
+# Check residuals DFFITS
+
+cleanvac <-
+  cleanvac |> 
+  mutate(dffits = dffits(model))
+
+cleanvac |> 
+  mutate(obs_number = row_number(),
+         large = ifelse(abs(dffits) > 2*sqrt(length(coef(model))/nobs(model)),
+                        "red", "black")) |> 
+  ggplot(aes(obs_number, dffits, color = large)) +
+  geom_point() + 
+  geom_hline(yintercept = c(-1,1) * 2*sqrt(length(coef(model))/nobs(model)), color = "red") +
+  scale_color_identity()
+
+```
+
+
+
+
+# table, plot 
+
+```{r}
+
+# Extract odds ratios and confidence intervals
+odds_ratios <- exp(coef(model))
+conf_int <- exp(confint(model))
+
+# Create a table of results
+results <- data.frame(
+    Variable = names(odds_ratios),
+    OR = round(odds_ratios, 3),
+    CI = paste("(", round(conf_int[, 1], 3), ", ", round(conf_int[, 2], 3), ")",sep=""),
+    LowerCI = format(round(conf_int[, 1], 3), nsmall=3),
+    UpperCI = format(round(conf_int[, 2], 3), nsmall=3),
+    p_values = round(summary(model)$coefficients[, 4], 4),
+    label = c("blank", "Bednet use", "Primary school (vs. No school)", "Secondary school", "University", "Married (vs. Unmarried)", "Divorced", "Widowed", "Father (vs. Mother)", "Grandparent", "Aunt or Uncle", "Other relationship"),
+    Index = c(0,1,2,3,4,5,6,7,8,9,10,11)
+)
+
+results
+
+# format p-value
+results$p_values <-as.character(results$p_values)
+  
+results$p_values <- if_else(results$p_values==0.0000, "<0.0001", results$p_values)
+
+
+# Convert Variable to factor/sort for ordering
+results$Variable <- factor(results$Variable, levels = rev(results$Variable))
+
+# Remove intercept
+results <- filter(results, Variable != "(Intercept)")
+
+# Display odds ratios and confidence intervals
+print(results) 
+
+
+
+# change discrete -> numeric vars
+results$LowerCI <- as.numeric(results$LowerCI)
+results$UpperCI <- as.numeric(results$UpperCI)
+
+
+# subset view, one last check!
+view = subset(results, select = c(label, OR, CI, p_values, Index))
+
+# Display odds ratios and confidence intervals
+print(view)
+
+```
+
+# table, Odds ratio plot 
+```{r}
+
+
+# Odds ratio plot 
+library(ggplot2)
+library(gridExtra)
+
+p<-tableGrob(results)
+grid.arrange(p)
+dev.off()
+
+# Create forest plot
+forest_plot <- ggplot(results, aes(x = label, y = OR)) +
+    geom_point(size = 1) +
+    geom_errorbar(aes(ymin = LowerCI, ymax = UpperCI), width = 0.2) +
+    geom_hline(yintercept = 1, linetype = "dashed", color = "lightgrey", size = 1) +
+    labs(title = "Odds Ratio Plot", y = "Adjusted Odds Ratio", x = "Variable") +
+      scale_y_log10() +
+    theme_minimal() +
+    coord_flip()
+forest_plot
+
+```
+
+
+```{r}
+# Automated forest plot 
+library(sjPlot)
+plot_model(model, show.values = TRUE, value.offset = .3, vline.color = "red")
+```
+

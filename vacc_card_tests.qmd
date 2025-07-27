@@ -1,0 +1,158 @@
+---
+title: "vacc_tests_card"
+format: html
+author: Joyce CHoe
+---
+
+## Import data
+
+```{r}
+#| echo: false
+
+# Import data 
+library(readr)
+cleanvac <- read_csv("project841_7.csv")
+
+# variable names 
+library(tidyverse)
+tibble(cleanvac)
+spec(cleanvac)
+
+# stats of aggregate beliefs and exp scores
+summary(cleanvac$beliefs1)
+summary(cleanvac$exp1)
+hist(cleanvac$beliefs1)
+hist(cleanvac$exp1)
+
+# check normality assumption
+# both scores fail to meet normality assumption
+shapiro.test(cleanvac$beliefs1)
+shapiro.test(cleanvac$exp1)
+
+# transform scores 
+cleanvac$t_beliefs <- (cleanvac$beliefs1)/10
+cleanvac$t_exp   <- (cleanvac$exp1)/14
+
+# recheck stats and normality assumption
+# still fail to meet normality assumption
+summary(cleanvac$t_beliefs)
+summary(cleanvac$t_exp)
+hist(cleanvac$t_beliefs)
+hist(cleanvac$t_exp)
+shapiro.test(cleanvac$t_beliefs)
+shapiro.test(cleanvac$t_exp)
+```
+
+
+```{r}
+# subset dataset to key variables of interest
+cleanvac <- cleanvac %>%
+  select(beliefs1, exp1, vacc_where, child_sex, birthplace2, attendants, birth_status, bednet, inpatient, caregiver_sex, relationship, education, marital, card,  muac, age_months, birthplace, children, oldest_child, vacc_recall, measles, rota1, rota2,bcg, opt, penta1, penta2, penta3, vacc_full)
+
+```
+
+
+```{r}
+
+
+# recode binary/factors -> cat variables
+names <- c('card','caregiver_sex','relationship','marital','education','bednet')
+cleanvac[,names] <- lapply(cleanvac[,names], factor)
+
+# refactor levels
+library(forcats)
+# Rename all factor levels 
+cleanvac$card <- fct_recode(cleanvac$card, "No" = "0", "Yes" = "1") 
+cleanvac$caregiver_sex <- fct_recode(cleanvac$caregiver_sex, "Female" = "0", "Male" = "1") 
+cleanvac$relationship <- fct_recode(cleanvac$relationship, "Mother" = "0", "Father" = "1", "Grandparent" = "2", "Aunt or Uncle" = "3", "Other" = "4")
+cleanvac$marital <- fct_recode(cleanvac$marital, "Unmarried" = "0", "Married" = "1", "Divorced" = "2", "Widowed" = "3") 
+cleanvac$education <- fct_recode(cleanvac$education, "No school" = "0", "Primary school" = "1", "Secondary school" = "2", "University" = "3") 
+cleanvac$bednet <- fct_recode(cleanvac$bednet, "No" = "0", "Yes" = "1") 
+
+```
+
+
+```{r}
+# descriptive table comparing demographics between card vs. no card
+library(tidyverse)
+library(gtsummary)
+library(webshot2)
+table1 <- cleanvac %>%
+   tbl_summary(
+    by = card,
+    sort = all_categorical() ~ "frequency",
+    percent = "row",
+    include = c(card, age_months, caregiver_sex, relationship, education, marital, bednet),
+  statistic = list(
+      all_continuous() ~ "{mean} ({sd})",
+      all_categorical() ~ "{n} ({p}%)"
+    ),
+   missing_stat = "{N_miss} ({p_miss}%)",
+    digits = all_continuous() ~ 1,
+    label = list(age_months = "Child Age in Months", caregiver_sex = "Caregiver sex", education = "Caregiver Education", relationship = "Relationship to Child", marital = "Marital Status", bednet = "Child Bednet Use"),
+    missing_text = "Missing",
+    type = all_dichotomous() ~ "categorical") %>%
+  add_stat_label(label = age_months ~ "mean (SD)") %>%
+  add_p(pvalue_fun = label_style_pvalue(digits = 2)) %>%
+  modify_header(all_stat_cols() ~ " **{level}**, N = {n} ({style_percent(p)}%)") %>%
+  modify_spanning_header(all_stat_cols() ~ "Vaccine Card Availability")
+table1
+
+table1 |>  # build gtsummary table
+  as_gt() |>  # convert to gt table
+  gt::gtsave( # save table as word file
+    filename = "table1.docx"
+  )
+```
+
+
+# Outcome variable
+
+```{r}
+
+# Unstable parameter estimates for testing rota1, rota2 vaccines: 
+# 99.5% received rota1, 98.7% received rota2 
+prop.table(table(cleanvac$rota1))
+prop.table(table(cleanvac$rota2))
+
+# 67.5% vaccine card, 32.5% no vaccine card
+prop.table(table(cleanvac$card))
+
+
+```
+
+# Test variables by card status before including into model 
+## chi-square tests for categorical variables
+## wilcoxon test for continuous variables
+
+```{r}
+
+# Chi-square test association
+# categorical variables
+chisq.test(table(cleanvac$vacc_where, cleanvac$card))
+chisq.test(table(cleanvac$child_sex, cleanvac$card))
+chisq.test(table(cleanvac$birthplace2, cleanvac$card))
+chisq.test(table(cleanvac$birth_status, cleanvac$card))
+chisq.test(table(cleanvac$bednet, cleanvac$card))
+chisq.test(table(cleanvac$inpatient, cleanvac$card))
+chisq.test(table(cleanvac$caregiver_sex, cleanvac$card))
+chisq.test(table(cleanvac$relationship, cleanvac$card))
+chisq.test(table(cleanvac$education, cleanvac$card))
+chisq.test(table(cleanvac$marital, cleanvac$card))
+
+# 2-sample Wilcoxon test, grouped by card status
+# continuous variables
+wilcox.test(cleanvac$beliefs1 ~ cleanvac$card)
+wilcox.test(cleanvac$exp1 ~ cleanvac$card)
+wilcox.test(cleanvac$muac ~ cleanvac$card)
+wilcox.test(cleanvac$age_months ~ cleanvac$card)
+wilcox.test(cleanvac$birthplace ~  cleanvac$card)
+wilcox.test(cleanvac$children ~ cleanvac$card)
+wilcox.test(cleanvac$oldest_child ~ cleanvac$card)
+
+
+```
+
+
+
+

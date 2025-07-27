@@ -1,0 +1,574 @@
+---
+title: "vacc_tests_scores"
+format: html
+author: Joyce Choe
+---
+
+## Import data
+
+```{r}
+#| echo: false
+
+# Import data 
+library(readr)
+cleanvac <- read_csv("project841_7.csv")
+
+# variable names 
+library(tidyverse)
+tibble(cleanvac)
+
+
+```
+
+```{r}
+
+# stats of aggregate beliefs and exp scores
+summary(cleanvac$beliefs1)
+summary(cleanvac$exp1)
+
+
+# check normality assumption
+# both scores fail to meet normality assumption
+shapiro.test(cleanvac$beliefs1)
+shapiro.test(cleanvac$exp1)
+
+# transform scores 
+# range = [0,1]
+# interpret as proportion of questions answered favorably by diving out of total questions 
+
+
+# belief score, max questions = 10
+cleanvac$t_beliefs <- (cleanvac$beliefs1)/10
+
+# experience score, max questions = 14
+cleanvac$t_exp   <- (cleanvac$exp1)/14
+
+```
+
+```{r}
+# recheck stats and normality assumption
+# still fails to meet normality assumption
+summary(cleanvac$t_beliefs)
+summary(cleanvac$t_exp)
+
+shapiro.test(cleanvac$t_beliefs)
+shapiro.test(cleanvac$t_exp)
+
+hist(cleanvac$beliefs1)
+hist(cleanvac$t_beliefs)
+
+hist(cleanvac$exp1)
+hist(cleanvac$t_exp)
+
+```
+
+
+
+### Use non-parametric tests: 
+# 1. Wilcoxon rank sum test (vs. 2 groups, binary)
+
+
+```{r}
+table(cleanvac$caregiver_sex)
+class(cleanvac$caregiver_sex)
+
+library(coin)
+library(rstatix)
+# Wilcoxon Rank Sum test, binary 
+wilcox.test(t_beliefs ~ caregiver_sex, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_beliefs ~ caregiver_sex,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+
+wilcox.test(t_beliefs ~ bednet, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_beliefs ~ bednet,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_beliefs ~ inpatient, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_beliefs ~ caregiver_sex,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_beliefs ~ child_sex, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_beliefs ~ child_sex,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_beliefs ~ hbv_test, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_beliefs ~ hbv_test,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_beliefs ~ hbv_res, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_beliefs ~ hbv_res,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_beliefs ~ dbs, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_beliefs ~ dbs,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+
+wilcox.test(t_exp ~ caregiver_sex, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_exp ~ caregiver_sex,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_exp ~ bednet, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_exp ~ bednet,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_exp ~ inpatient, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_exp ~ inpatient,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_exp ~ child_sex, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_exp ~ child_sex,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_exp ~ hbv_test, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_exp ~ hbv_test,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_exp ~ hbv_res, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_exp ~ hbv_res,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_exp ~ dbs, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_exp ~ dbs,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+
+wilcox.test(t_beliefs ~ card, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_beliefs ~ card,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+wilcox.test(t_exp ~ card, data=cleanvac)
+wilcox_effsize(
+  cleanvac,
+  t_exp ~ card,
+  ref.group = "0",
+  paired = FALSE,
+  alternative = "two.sided"
+)
+
+
+
+
+```
+
+
+### Wilcoxon boxplots, sig. associations
+```{r}
+#| echo: false
+library(ggstatsplot)
+
+
+# belief plots
+ggbetweenstats(
+  data = cleanvac,
+  x = bednet,
+  y = t_beliefs,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+
+ggbetweenstats(
+  data = cleanvac,
+  x = hbv_test,
+  y = t_beliefs,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+
+
+ggbetweenstats(
+  data = cleanvac,
+  x = inpatient,
+  y = t_exp,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+
+ggbetweenstats(
+  data = cleanvac,
+  x = card,
+  y = t_beliefs,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+ggbetweenstats(
+  data = cleanvac,
+  x = card,
+  y = t_exp,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+
+
+
+```
+
+
+
+# 2. Kruskal-Wallis test (vs. 3 or more groups, nominal)
+
+```{r}
+#| echo: false
+# Kruskal-Wallis, 3 or more groups, nominal
+
+kruskal.test(t_beliefs ~ relationship, data=cleanvac)
+kruskal.test(t_beliefs ~ marital, data=cleanvac)
+kruskal.test(t_beliefs ~ vacc_where, data=cleanvac)
+kruskal.test(t_beliefs ~ birthplace2, data=cleanvac)
+kruskal.test(t_beliefs ~ birth_status, data=cleanvac)
+kruskal.test(t_beliefs ~ muac_color, data=cleanvac)
+kruskal.test(t_beliefs ~ education, data=cleanvac)
+
+kruskal.test(t_exp ~ relationship, data=cleanvac)
+kruskal.test(t_exp ~ marital, data=cleanvac)
+kruskal.test(t_exp ~ vacc_where, data=cleanvac)
+kruskal.test(t_exp ~ birthplace2, data=cleanvac)
+kruskal.test(t_exp ~ birth_status, data=cleanvac)
+kruskal.test(t_exp ~ muac_color, data=cleanvac)
+kruskal.test(t_exp ~ education, data=cleanvac)
+
+```
+
+## Dunn test
+
+```{r}
+# Multiple comparison tests after sig. association in kruskal-wallis
+
+options(tibble.print_max = Inf) 
+
+library(rstatix)
+dunn_test(data=cleanvac, t_beliefs ~ vacc_where, p.adjust.method = "holm", detailed = TRUE)
+dunn_test(data=cleanvac, t_beliefs ~ birthplace2, p.adjust.method = "holm", detailed = TRUE)
+dunn_test(data=cleanvac, t_beliefs ~ muac_color, p.adjust.method = "holm", detailed = TRUE)
+dunn_test(data=cleanvac, t_beliefs ~ education, p.adjust.method = "holm", detailed = TRUE)
+dunn_test(data=cleanvac, t_beliefs ~ marital, p.adjust.method = "holm", detailed = TRUE)
+
+dunn_test(data=cleanvac, t_exp ~ vacc_where, p.adjust.method = "holm", detailed = TRUE)
+dunn_test(data=cleanvac, t_exp ~ marital, p.adjust.method = "holm", detailed = TRUE)
+dunn_test(data=cleanvac, t_exp ~ education, p.adjust.method = "holm", detailed = TRUE)
+dunn_test(data=cleanvac, t_exp ~ birthplace2, p.adjust.method = "holm", detailed = TRUE)
+```
+
+## K-W plots
+
+```{r}
+#| echo: false
+# belief plots
+library(ggstatsplot)
+ggbetweenstats(
+  data = cleanvac,
+  x = vacc_where,
+  y = t_beliefs,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+ggbetweenstats(
+  data = cleanvac,
+  x = birthplace2,
+  y = t_beliefs,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+ggbetweenstats(
+  data = cleanvac,
+  x = muac_color,
+  y = t_beliefs,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+ggbetweenstats(
+  data = cleanvac,
+  x = education,
+  y = t_beliefs,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+# exp plots
+ggbetweenstats(
+  data = cleanvac,
+  x = vacc_where,
+  y = t_exp,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+ggbetweenstats(
+  data = cleanvac,
+  x = marital,
+  y = t_exp,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+ggbetweenstats(
+  data = cleanvac,
+  x = education,
+  y = t_exp,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+
+```
+
+### Untransformed scores
+```{r}
+#| echo: false
+# untransformed scores
+# belief plots
+library(ggstatsplot)
+ggbetweenstats(
+  data = cleanvac,
+  x = vacc_where,
+  y = beliefs1,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+ggbetweenstats(
+  data = cleanvac,
+  x = birthplace2,
+  y = beliefs1,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+ggbetweenstats(
+  data = cleanvac,
+  x = muac_color,
+  y = beliefs1,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+ggbetweenstats(
+  data = cleanvac,
+  x = education,
+  y = beliefs1,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+# exp plots
+ggbetweenstats(
+  data = cleanvac,
+  x = vacc_where,
+  y = exp1,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+ggbetweenstats(
+  data = cleanvac,
+  x = marital,
+  y = exp1,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+
+ggbetweenstats(
+  data = cleanvac,
+  x = education,
+  y = exp1,
+  type = "nonparametric", 
+  plot.type = "box",
+  pairwise.comparisons = TRUE,
+  pairwise.display = "significant",
+  centrality.plotting = TRUE,
+  bf.message = FALSE
+)
+```
+
+
+# 3. Kendall's tau (vs. continuous)
+
+
+```{r}
+
+# Kendall's tau corr, continuous
+
+cor.test(cleanvac$t_beliefs, cleanvac$t_exp, method = "kendall")
+cor.test(cleanvac$t_beliefs, cleanvac$age_months, method = "kendall")
+cor.test(cleanvac$t_beliefs, cleanvac$oldest_child, method = "kendall")
+cor.test(cleanvac$t_beliefs, cleanvac$muac, method = "kendall")
+cor.test(cleanvac$t_beliefs, cleanvac$children, method = "kendall")
+cor.test(cleanvac$t_beliefs, cleanvac$birthplace, method = "kendall")
+
+cor.test(cleanvac$t_exp, cleanvac$age_months, method = "kendall")
+cor.test(cleanvac$t_exp, cleanvac$oldest_child, method = "kendall")
+cor.test(cleanvac$t_exp, cleanvac$muac, method = "kendall")
+cor.test(cleanvac$t_exp, cleanvac$children, method = "kendall")
+cor.test(cleanvac$t_exp, cleanvac$birthplace, method = "kendall")
+
+```
+
+### Corr plots, sig. associations
+
+```{r}
+#| echo: false
+
+library(ggstatsplot)
+ggscatterstats(data=cleanvac, t_beliefs, muac, type="nonparametric", conf.level=0.95)
+
+ggscatterstats(data=cleanvac, t_exp, muac, type="nonparametric", conf.level=0.95)
+
+
+ggscatterstats(data=cleanvac, t_exp, oldest_child, type="nonparametric", conf.level=0.95)
+
+
+ggscatterstats(data=cleanvac, t_exp, children, type="nonparametric", conf.level=0.95)
+
+
+
+ 
+```
+
+# Brief Results
+
+Caregivers who brought their child to government health facilities 2, 3, or Immunization Program Visits to receive vaccinations over private healthcare were associated with a higher aggregate belief score (Table S1). Caregivers who did not complete school compared to those who completed primary or secondary school, and children born in private healthcare facilities over government health facilities or at home were associated with a lower aggregate belief score (Table S1). Children who slept under a bed net in the previous night were associated with a higher aggregate belief score, although with minimal effect (Cohen’s d = 0.089, p-value = <0.001, Table 3).
+
+Caregivers taking care of more children were associated with a marginally higher aggregate experience score (Kendall’s tau = 0.070, p-value = < 0.001, Table 3). Caregivers who brought their child to government health facility 2 over facility 3 to receive vaccinations were associated with a higher aggregate experience score (Table S1). In contrast to belief scores, caregivers who did not complete school compared to those who completed primary and secondary school, and married caregivers over those unmarried were associated with a higher aggregate experience score (Table S1). Children who stayed overnight in a hospital or clinic at least once in their lifetime were associated with a higher aggregate experience score, although with minimal effect (Cohen’s d = 0.131, p-value = <0.001, Table 3).
+
+

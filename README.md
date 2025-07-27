@@ -1,4 +1,4 @@
-### BIOS 841: Statistical Collaboration Project
+### BIOS 841: Statistical Consultant Project
 
 #### Association between Caregiver Beliefs and Experiences and Childhood Immunizations in rural Uganda, 2021
 

@@ -5,11 +5,10 @@
 Background:<br>
 In 2016, a national health survey in Uganda revealed that about 55% of children aged 12-23 months
 received all recommended vaccinations (UBOS, 2018). To explore vaccination coverage in rural areas of western Uganda, 
-we analyzed a more recent vaccination survey of 12-23 month-old children, residing with a caregiver.
+we analyzed a more recent vaccination survey of children residing with a caregiver in Bugoye sub-county, Uganda.
 Data for the study were collected between January 20, 2021 and April 30, 2021 in Bugoye sub-county, Uganda.
-Children of this age are recommended to receive the following vaccines and boosters:
+Children, 12-23 months of age, are recommended to receive the following vaccines and boosters:
 BCG (Bacille Calmette-Guérin), polio, pentadose 1-3 (diphtheria, tetanus, pertussis, hepatitis B, and Hib disease), rotavirus 1-2, and measles (UBOS, 2018).
-
 ![alt text](uganda_vacc.png "(UBOS 2018)")
 Image credits (UBOS, 2018).
 
@@ -22,9 +21,9 @@ beliefs, and caregiver experiences, potential confounders such as caregiver educ
 and response rates to vaccination uptake.  We created an additional response variable, indicating full vaccination status based on the eight vaccines
 already in the dataset.
 
-Methods<br>
+Methods example<br>
 Subsection: Sociodemographic Factors Associated with Belief and Experience Scores:<br>
-To assess caregiver and child factors associated with aggregate belief and experience scores, we used the following nonparametric analyses.
+To assess sociodemographic factors associated with aggregate belief and experience scores, we used the following nonparametric analyses.
 Continuous variables were examined using Kendall’s Tau rank correlation, binary variables were examined using Wilcoxon Rank Sum test and Cohen’s d statistic, and multinomial variables were examined using Kruskal-Wallis test. Following Kruskal-Wallis, Dunn's test was performed for pairwise comparisons between groups that were significantly associated with belief or experience scores. All statistical tests were performed at a two-sided significance level of 0.05. Holm’s method was applied to control the Type 1 error rate in Dunn’s test.
 
 Reference:<br>
